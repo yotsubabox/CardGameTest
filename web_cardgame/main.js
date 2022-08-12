@@ -241,7 +241,7 @@ $deck.on('click', '.card:not(".match, .open")', function () {
 		var score = setRating(moves).score;
 		setTimeout(function() {
 			endGame(moves, score);
-		}, 1000);
+		}, delay);
   }
 });
 
