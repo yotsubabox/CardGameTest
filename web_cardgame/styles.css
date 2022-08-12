@@ -20,7 +20,15 @@ footer {
 
 .deck {
     width: 345px;
-    margin: 0 auto;
+/*    margin: 0 auto; */
+    padding: 16px;
+    border-radius: 10px;
+}
+
+.deck .oepn{
+
+    width: 345px;
+/*   margin: 0 auto; */
     padding: 16px;
     border-radius: 10px;
 }
