@@ -67,9 +67,7 @@ footer {
 }
 
 .deck .card.match {
-    cursor: default;
     background: #9BCB3C;
-    font-size: 33px;
 }
 
 .deck .card.notmatch {
