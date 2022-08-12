@@ -1,19 +1,23 @@
 var symbols = ['00a', '00b', '01a', '01b', '02a', '02b',
   '03a', '03b', '04a', '04b',
   '05a', '05b', '06a', '06b', '07a', '07b'],
-    opened = [],
-    match = 0,
-    moves = 0,
-    $deck = $('.deck'),
-    $scorePanel = $('#score-panel'),
-    $moveNum = $scorePanel.find('.moves'),
-    $ratingStars = $scorePanel.find('i'),
-    $restart = $scorePanel.find('.restart'),
-    delay = 800,
-    gameCardsQTY = symbols.length / 2,
-    rank3stars = gameCardsQTY + 2,
-    rank2stars = gameCardsQTY + 6,
-    rank1stars = gameCardsQTY + 10;
+  opened = [],
+  match = 0,
+  moves = 0,
+  $deck = $('.deck'),
+  $deckOpen = $('.deck open'),
+  $scorePanel = $('#score-panel'),
+  $moveNum = $scorePanel.find('.moves'),
+  $ratingStars = $scorePanel.find('i'),
+  $restart = $scorePanel.find('.restart'),
+  delay = 800,
+  gameCardsQTY = symbols.length / 2,
+  rank3stars = gameCardsQTY + 2,
+  rank2stars = gameCardsQTY + 6,
+  rank1stars = gameCardsQTY + 10,
+  time = 0
+  timeStart = false;
+    
 
 
 // Shuffle function From http://stackoverflow.com/a/2450976
@@ -34,6 +38,9 @@ return array;
 // Initial Game
 function initGame() {
     var cards = shuffle(symbols);
+    document.getElementById("time").innerHTML = "00:00";
+    timeStart = false;
+    time = 0;
     $deck.empty();
     match = 0;
     moves = 0;
@@ -42,7 +49,10 @@ function initGame() {
 	for (var i = 0; i < cards.length; i++) {
 		$deck.append($('<li class="card" value=' + cards[i] + '><img src =".\\img\\card.png"/ height = 80 width = 100 id ="img_'+cards[i]+'"></li>'))
         //$deck.append($('<li class="card" value=' + cards[i] + '><img src="img\\' + [i] + '.png" height="100" width="50"><i class="fa fa-' + cards[i] + '"></i></li>'))
-    }
+  }
+
+  
+
    // $('.card').hide();
 
 //<img src="img\\'+[i]+'.png" height="100" width="50">
@@ -71,15 +81,17 @@ function endGame(moves, score) {
 		allowEscapeKey: false,
 		allowOutsideClick: false,
 		title: 'Congratulations! You Won!',
-		text: 'With ' + moves + ' Moves and ' + score + ' Stars.',
+    text: 'With ' + moves + ' Moves, ' + score + ' Stars' + ', ' + time +' sec',
 		type: 'success',
 		confirmButtonColor: '#9BCB3C',
 		confirmButtonText: 'Play again!'
 	}).then(function(isConfirm) {
 		if (isConfirm) {
+      location.reload();
 			initGame();
 		}
-	})
+  })
+
 }
 
 // Restart Game
@@ -96,17 +108,55 @@ $restart.on('click', function() {
     confirmButtonText: 'Yes, Restart Game!'
   }).then(function(isConfirm) {
     if (isConfirm) {
+      location.reload();
       initGame();
     }
   })
 });
 
+function startTime() {
+  if (timeStart) {
+    var min = 0;
+    var sec = 0
+    var timer = 0;
+
+    timer = setInterval(function () {
+      time++;
+
+      min = Math.floor(time / 60);
+
+      sec = time % 60;
+      min = min % 60;
+
+      var tm = min;
+      var ts = sec;
+
+      if (tm < 10) {
+        tm = "0" + min;
+      }
+
+      if (ts < 10) {
+        ts = "0" + sec;
+      }
+
+      document.getElementById("time").innerHTML = tm + ":" + ts;
+    }, 1000);
+  } else {
+      clearInterval(timer);
+  }
+}
+
+
   var cardcase = [];
 // Card flip
 // card = $this.context.innerHTML;
 $deck.on('click', '.card:not(".match, .open")', function () {
+  if (!timeStart) {
+    timeStart = true;
+    startTime();
+  }
 
-
+  
 	if($('.open').length > 1) {return true; }
   
   var $this = $(this),
