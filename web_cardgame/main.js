@@ -171,7 +171,6 @@ $deck.on('click', '.card:not(".match, .open")', function () {
     $('#img_' + card + '').attr("width", "60");
     $('#img_' + card + '').css('margin', '2px'); 
   
-  
 	opened.push(card.substr(0,2));
 
 	// Compare with opened card
@@ -179,6 +178,7 @@ $deck.on('click', '.card:not(".match, .open")', function () {
 
 
     $('#img_' + card + '').attr("src", "img\\" + card.substr(1, 1) + ".png");
+
     if (card.substr(0, 2) === opened[0]) {
       $deck.find('.open').addClass('match animated infinite rubberBand');
       setTimeout(function() {
@@ -197,7 +197,7 @@ $deck.on('click', '.card:not(".match, .open")', function () {
 
 
 
-      }, delay / 1.5);
+      }, delay);
 
       setTimeout(function () {
         
@@ -241,7 +241,7 @@ $deck.on('click', '.card:not(".match, .open")', function () {
 		var score = setRating(moves).score;
 		setTimeout(function() {
 			endGame(moves, score);
-		}, 500);
+		}, 1000);
   }
 });
 
